@@ -9,7 +9,7 @@ import com.kosgei.movieapp.data.models.Movie
 interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    suspend fun getAllMovies(): List<Movie>
+     fun getAllMovies():LiveData<List<Movie>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMultiple(movies: List<Movie>)

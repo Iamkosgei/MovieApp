@@ -8,4 +8,5 @@
     <string name="release_date">Release date</string>
     <string name="average_rating">Average rating</string>
     <string name="dark_mode">Dark mode</string>
+    <string name="movie_image">movie image</string>
 </resources>

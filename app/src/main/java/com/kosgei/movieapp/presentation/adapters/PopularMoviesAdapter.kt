@@ -4,12 +4,19 @@ package com.kosgei.movieapp.presentation.adapters
 import android.view.LayoutInflater
 import android.view.View;
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.ListAdapter
 
 import androidx.recyclerview.widget.RecyclerView;
+import com.kosgei.movieapp.R
 import com.kosgei.movieapp.data.models.Movie
+import com.kosgei.movieapp.databinding.FragmentMovieDetailsBinding
 import com.kosgei.movieapp.databinding.MovieItemBinding
 import com.kosgei.movieapp.presentation.adapters.PopularMoviesAdapter.*
+import com.kosgei.movieapp.presentation.fragments.PopularMoviesFragment
+import com.kosgei.movieapp.presentation.fragments.PopularMoviesFragmentDirections
 
 class PopularMoviesAdapter(private var movies: List<Movie>) :
     ListAdapter<Movie, PopularMoviesViewHolder>(PopularMoviesDiffCallBack()) {
@@ -29,7 +36,7 @@ class PopularMoviesAdapter(private var movies: List<Movie>) :
 
     class PopularMoviesViewHolder(private val movieItemBinding: MovieItemBinding) :
         RecyclerView.ViewHolder(movieItemBinding.root), View.OnClickListener {
-        private var movie: Movie? = null
+        private lateinit var movie: Movie
 
         init {
 
@@ -38,15 +45,22 @@ class PopularMoviesAdapter(private var movies: List<Movie>) :
 
         fun setMovie(movie: Movie) {
             this.movie = movie
-
             movieItemBinding.movie = movie
-//
-//            Glide.with(movieItemBinding.root).load(IMAGE_BASE_URL + movie.poster_path)
-//                .into(movieItemBinding.movieImage)
         }
 
-        override fun onClick(v: View?) {
+        override fun onClick(v: View) {
+            val directions =
+                PopularMoviesFragmentDirections.actionPopularMoviesFragmentToMovieDetailsFragment(
+                    movie
+                )
+            val extras = FragmentNavigatorExtras(
+                movieItemBinding.movieImage to movie.poster_path
+            )
 
+            v.findNavController().navigate(
+                directions,
+                extras
+            )
         }
 
     }

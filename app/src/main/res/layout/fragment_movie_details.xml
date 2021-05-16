@@ -1,14 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.fragments.MovieDetailsFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="movie"
+            type="com.kosgei.movieapp.data.models.Movie"/>
+    </data>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context=".presentation.fragments.MovieDetailsFragment">
+            <ImageView
+                android:id="@+id/movie_image"
+                android:layout_width="match_parent"
+                app:posterPath="@{movie.poster_path}"
+                android:layout_height="400dp"
+                android:transitionName="@{movie.poster_path}"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/movie_image" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/movie_name"
+                    android:layout_margin="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="@{movie.title}"
+                    android:textColor="@color/primary_text_color"
+                    android:textAlignment="textStart"
+                    android:textStyle="bold" />
 
-</FrameLayout>
+                <TextView
+                    android:id="@+id/movie_release_date"
+                    android:layout_margin="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@{`Release Date: ` + movie.release_date}"
+                    android:textColor="@color/secondary_text_color"
+                    android:textAlignment="textStart" />
+
+                <TextView
+                    android:id="@+id/movie_rating"
+                    android:layout_margin="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@{movie.vote_average + ` /10`}"
+                    android:textColor="@color/secondary_text_color"
+                    android:textAlignment="textStart" />
+
+                <TextView
+                    android:id="@+id/movie_language"
+                    android:layout_margin="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@{`Language ` + movie.original_language}"
+                    android:textColor="@color/secondary_text_color"
+                    android:textAlignment="textStart" />
+
+                <TextView
+                    android:layout_margin="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@{movie.overview}"
+                    android:textColor="@color/secondary_text_color"
+                    android:textAlignment="textStart" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

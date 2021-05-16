@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import com.kosgei.movieapp.R
 import com.kosgei.movieapp.data.models.Movie
 import com.kosgei.movieapp.databinding.FragmentPopularMoviesBinding
 import com.kosgei.movieapp.presentation.adapters.PopularMoviesAdapter
@@ -44,67 +41,32 @@ class PopularMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         getPopularMovies()
-        setUpErrorLayout()
     }
 
-    private fun setUpErrorLayout() {
-        binding.buttonRetry.setOnClickListener {
-            getPopularMovies()
-        }
-    }
 
     private fun setUpRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         popularMoviesAdapter = PopularMoviesAdapter(arrayListOf())
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                recyclerView.context,
-                (recyclerView.layoutManager as LinearLayoutManager).orientation
-            )
-        )
         recyclerView.adapter = popularMoviesAdapter
     }
 
     private fun getPopularMovies() {
-        moviesViewModel.getCurrentPopularMovies().observe(viewLifecycleOwner, {
+        moviesViewModel.popularMovies.observe(viewLifecycleOwner, {
             it?.let { resultWrapper ->
                 run {
                     when (resultWrapper.status) {
                         Status.SUCCESS -> {
                             binding.shimmerFrameLayout.isVisible = false
                             binding.popularMoviesRecycler.isVisible = true
-                            binding.errorLayout.isVisible = false
-                            resultWrapper.data?.let { it1 -> setPopularMovies(it1.movies) }
+                            resultWrapper.data?.let { it1 -> setPopularMovies(it1) }
                         }
                         Status.ERROR -> {
-
                             binding.shimmerFrameLayout.isVisible = false
                             binding.popularMoviesRecycler.isVisible = false
-
-                            if (resultWrapper.refreshing!!) {
-                                binding.popularMoviesRecycler.isVisible = true
-                                binding.errorLayout.isVisible = false
-                                resultWrapper.message?.let { it1 ->
-                                    Snackbar.make(requireView(), it1, Snackbar.LENGTH_SHORT)
-                                        .show()
-                                }
-                            } else {
-                                resultWrapper.message?.let { it1 ->
-                                    binding.errorMessage.text = it1
-                                }
-                                binding.errorLayout.isVisible = true
-                            }
-
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         }
                         Status.LOADING -> {
-                            binding.popularMoviesRecycler.isVisible = false
-
-                            if (resultWrapper.refreshing!!) {
-                                Snackbar.make(requireView(), "Refreshing", Snackbar.LENGTH_SHORT)
-                                    .show()
-                            } else {
-                                binding.shimmerFrameLayout.isVisible = true
-                            }
+                            binding.shimmerFrameLayout.isVisible = true
                         }
                     }
                 }

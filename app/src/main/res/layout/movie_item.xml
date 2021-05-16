@@ -27,6 +27,7 @@
                     android:id="@+id/movie_image"
                     android:layout_weight="1"
                     android:layout_width="0dp"
+                    android:transitionName="imageView"
                     app:posterPath="@{movie.poster_path}"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />

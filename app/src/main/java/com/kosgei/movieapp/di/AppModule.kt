@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import com.kosgei.movieapp.BuildConfig
 import com.kosgei.movieapp.data.local.dao.MovieDao
 import com.kosgei.movieapp.data.local.db.MovieDb
+import com.kosgei.movieapp.data.remote.MovieRemoteDataSource
 import com.kosgei.movieapp.data.remote.api.MovieApiService
 import com.kosgei.movieapp.utils.BASE_URL
 import dagger.Module
@@ -82,4 +83,8 @@ object AppModule {
         httpClient.readTimeout(30, TimeUnit.SECONDS)
         httpClient.build()
     }
+
+    @Singleton
+    @Provides
+    fun provideMovieRemoteDataSource(movieApiService: MovieApiService) = MovieRemoteDataSource(movieApiService)
 }

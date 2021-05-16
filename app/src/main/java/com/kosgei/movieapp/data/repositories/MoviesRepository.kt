@@ -2,14 +2,17 @@ package com.kosgei.movieapp.data.repositories
 
 import com.kosgei.movieapp.data.local.dao.MovieDao
 import com.kosgei.movieapp.data.models.Movie
+import com.kosgei.movieapp.data.remote.MovieRemoteDataSource
 import com.kosgei.movieapp.data.remote.api.MovieApiService
+import com.kosgei.movieapp.utils.performGetOperation
 import javax.inject.Inject
 
-class MoviesRepository  @Inject constructor(private val movieApiService: MovieApiService, private val movieDao: MovieDao) {
+class MoviesRepository  @Inject constructor(private val remoteDataSource: MovieRemoteDataSource,
+                                            private val movieDao: MovieDao) {
 
-    suspend fun getCachedMovies() = movieDao.getAllMovies()
-
-    suspend fun getCurrentPopularMovies() = movieApiService.getPopularMovies()
-
-    suspend fun  saveMovies(movies:List<Movie>)= movieDao.insertMultiple(movies)
+    fun getCharacters() = performGetOperation(
+        databaseQuery = { movieDao.getAllMovies() },
+        networkCall = { remoteDataSource.getCurrentPopularMovies() },
+        saveCallResult = { movieDao.insertMultiple(it.movies) }
+    )
 }

@@ -7,10 +7,10 @@ import com.kosgei.movieapp.data.remote.api.MovieApiService
 import com.kosgei.movieapp.utils.performGetOperation
 import javax.inject.Inject
 
-class MoviesRepository  @Inject constructor(private val remoteDataSource: MovieRemoteDataSource,
-                                            private val movieDao: MovieDao) {
+class MoviesRepositoryImpl  @Inject constructor(private val remoteDataSource: MovieRemoteDataSource,
+                                                private val movieDao: MovieDao) : MovieRepository {
 
-    fun getCharacters() = performGetOperation(
+    override fun getCurrentPopularMovies() = performGetOperation(
         databaseQuery = { movieDao.getAllMovies() },
         networkCall = { remoteDataSource.getCurrentPopularMovies() },
         saveCallResult = { movieDao.insertMultiple(it.movies) }

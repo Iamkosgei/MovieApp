@@ -46,7 +46,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMovieApiService(retrofit: Retrofit): MovieApiService = retrofit.create(MovieApiService::class.java)
+    fun provideMovieApiService(retrofit: Retrofit): MovieApiService =
+        retrofit.create(MovieApiService::class.java)
 
     @Singleton
     @Provides
@@ -62,10 +63,10 @@ object AppModule {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
-            var original = chain.request()
+            val original = chain.request()
 
             val url: HttpUrl = original.url().newBuilder()
-              .addQueryParameter("api_key", BuildConfig.API_KEY)
+                .addQueryParameter("api_key", BuildConfig.API_KEY)
                 .build()
 
             val requestBuilder: Request.Builder = original.newBuilder()
@@ -86,5 +87,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMovieRemoteDataSource(movieApiService: MovieApiService) = MovieRemoteDataSource(movieApiService)
+    fun provideMovieRemoteDataSource(movieApiService: MovieApiService) =
+        MovieRemoteDataSource(movieApiService)
+
 }

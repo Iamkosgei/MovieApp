@@ -51,7 +51,7 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private fun getPopularMovies() {
-        moviesViewModel.popularMovies.observe(viewLifecycleOwner, {
+        moviesViewModel.getCurrentPopularMovies().observe(viewLifecycleOwner, {
             it?.let { resultWrapper ->
                 run {
                     when (resultWrapper.status) {
